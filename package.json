@@ -1,0 +1,31 @@
+{
+  "name": "cordova-plugin-sonos",
+  "description": "Cordova Sonos Plugin",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drudv/cordova-plugin-sonos.git"
+  },
+  "cordova": {
+    "id": "cordova-plugin-sonos",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "sonos",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "Aleksey Stepanets",
+  "license": "MIT"
+}
