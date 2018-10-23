@@ -126,6 +126,22 @@ function parserXML(val, nodeName) {
     ? xmlDoc.getElementsByTagName(nodeName)[0].childNodes[0].nodeValue
     : undefined;
 }
+function escapeXml(unsafe) {
+  return unsafe.replace(/[<>&'"]/g, function(c) {
+    switch (c) {
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '&':
+        return '&amp;';
+      case "'":
+        return '&apos;';
+      case '"':
+        return '&quot;';
+    }
+  });
+}
 var answer;
 module.exports = {
   deviseIos: function(data) {
@@ -317,9 +333,12 @@ module.exports = {
     ]);
   },
   playTrackURI: function(uri) {
+    this.playURI(
+      'x-sonos-http:tr%3a' + uri + '.mp3?sid=2&amp;flags=8224&amp;sn=1'
+    );
+  },
+  playURI: function(uri) {
     var self = this;
-    var curUri =
-      'x-sonos-http:tr%3a' + uri + '.mp3?sid=2&amp;flags=8224&amp;sn=1';
     self.stop();
     xmlhttp.open(
       'POST',
@@ -347,16 +366,14 @@ module.exports = {
     xmlhttp.setRequestHeader('Content-Encoding', 'gzip, deflate, sdch, br');
     xmlhttp.send([
       `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-									<s:Body>
-									<u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
-									<InstanceID>0</InstanceID>
-									<CurrentURI>` +
-        curUri +
-        `</CurrentURI>
-									<CurrentURIMetaData></CurrentURIMetaData>
-									</u:SetAVTransportURI>
-									</s:Body>
-									</s:Envelope>`,
+       <s:Body>
+		   <u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+		   <InstanceID>0</InstanceID>
+		   <CurrentURI>${escapeXml(uri)}</CurrentURI>
+       <CurrentURIMetaData></CurrentURIMetaData>
+		   </u:SetAVTransportURI>
+		   </s:Body>
+	     </s:Envelope>`,
     ]);
   },
   playFromQueue(index) {
