@@ -29,19 +29,19 @@ function setReadyState(action) {
   xmlhttp.setRequestHeader('Content-Encoding', 'gzip, deflate, sdch, br');
   xmlhttp.send([
     `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-			<s:Body>
-			<u:StopResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
-			<u:` +
+      <s:Body>
+      <u:StopResponse xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+      <u:` +
       action +
       ` xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
-			<InstanceID>0</InstanceID>
-			<Speed>1</Speed>
-			</u:` +
+      <InstanceID>0</InstanceID>
+      <Speed>1</Speed>
+      </u:` +
       action +
       `>
-			</u:StopResponse>
-			</s:Body>
-			</s:Envelope>`,
+      </u:StopResponse>
+      </s:Body>
+      </s:Envelope>`,
   ]);
 }
 function setMediaRenderer(action, val, success) {
@@ -107,16 +107,16 @@ function setMediaRenderer(action, val, success) {
   xmlhttp.setRequestHeader('Content-Encoding', 'gzip, deflate, sdch, br');
   xmlhttp.send([
     `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-				<s:Body>
-				<u:` +
+        <s:Body>
+        <u:` +
       action +
       ` xmlns:u="urn:schemas-upnp-org:service:RenderingControl:1"><InstanceID>0</InstanceID><Channel>Master</Channel>` +
       str +
       `</u:` +
       action +
       `>
-				</s:Body>
-				</s:Envelope>`,
+        </s:Body>
+        </s:Envelope>`,
   ]);
 }
 function parserXML(val, nodeName) {
@@ -322,20 +322,25 @@ module.exports = {
     xmlhttp.setRequestHeader('Content-Encoding', 'gzip, deflate, sdch, br');
     xmlhttp.send([
       `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-								<s:Body>
-								<u:GetPositionInfo xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
-								<InstanceID>0</InstanceID>
-								<Channel>Master</Channel>
-								</u:GetPositionInfo>
-								</s:Body>
-								</s:Envelope>
-								`,
+                <s:Body>
+                <u:GetPositionInfo xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+                <InstanceID>0</InstanceID>
+                <Channel>Master</Channel>
+                </u:GetPositionInfo>
+                </s:Body>
+                </s:Envelope>
+                `,
     ]);
   },
   playTrackURI: function(uri) {
     this.playURI(
       'x-sonos-http:tr%3a' + uri + '.mp3?sid=2&amp;flags=8224&amp;sn=1'
     );
+  },
+  playRadioURI: function(uri) {
+    this.playURI(
+      'x-rincon-mp3radio://' + uri.replace(/^[^:]+\:\/\//g, '')
+    )
   },
   playURI: function(uri) {
     var self = this;
@@ -367,13 +372,13 @@ module.exports = {
     xmlhttp.send([
       `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
        <s:Body>
-		   <u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
-		   <InstanceID>0</InstanceID>
-		   <CurrentURI>${escapeXml(uri)}</CurrentURI>
+       <u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+       <InstanceID>0</InstanceID>
+       <CurrentURI>${escapeXml(uri)}</CurrentURI>
        <CurrentURIMetaData></CurrentURIMetaData>
-		   </u:SetAVTransportURI>
-		   </s:Body>
-	     </s:Envelope>`,
+       </u:SetAVTransportURI>
+       </s:Body>
+       </s:Envelope>`,
     ]);
   },
   playFromQueue(index) {
@@ -414,16 +419,16 @@ module.exports = {
         xmlhttp.setRequestHeader('Content-Encoding', 'gzip, deflate, sdch, br');
         xmlhttp.send([
           `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-													<s:Body>
-													<u:Seek xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
-													<InstanceID>0</InstanceID>
-													<Unit>TRACK_NR</Unit>
-													<Target>` +
+                          <s:Body>
+                          <u:Seek xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+                          <InstanceID>0</InstanceID>
+                          <Unit>TRACK_NR</Unit>
+                          <Target>` +
             index +
             `</Target>
-													</u:Seek>
-													</s:Body>
-													</s:Envelope>`,
+                          </u:Seek>
+                          </s:Body>
+                          </s:Envelope>`,
         ]);
       } else {
         alert('Error, status' + xmlhttp.status + xmlhttp.responseText);
@@ -441,14 +446,14 @@ module.exports = {
     xmlhttp.setRequestHeader('Content-Encoding', 'gzip, deflate, sdch, br');
     xmlhttp.send([
       `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-											<s:Body>
-											<u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
-											<InstanceID>0</InstanceID>
-											<CurrentURI>x-rincon-queue:RINCON_949F3E1370C401400#0</CurrentURI>
-											<CurrentURIMetaData></CurrentURIMetaData>
-											</u:SetAVTransportURI>
-											</s:Body>
-											</s:Envelope>`,
+                      <s:Body>
+                      <u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+                      <InstanceID>0</InstanceID>
+                      <CurrentURI>x-rincon-queue:RINCON_949F3E1370C401400#0</CurrentURI>
+                      <CurrentURIMetaData></CurrentURIMetaData>
+                      </u:SetAVTransportURI>
+                      </s:Body>
+                      </s:Envelope>`,
     ]);
   },
   seek: function(timestamp) {
@@ -478,16 +483,16 @@ module.exports = {
     xmlhttp.setRequestHeader('Content-Encoding', 'gzip, deflate, sdch, br');
     xmlhttp.send([
       `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-												<s:Body>
-												<u:Seek xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
-												<InstanceID>0</InstanceID>
-												<Unit>REL_TIME</Unit>
-												<Target>` +
+                        <s:Body>
+                        <u:Seek xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+                        <InstanceID>0</InstanceID>
+                        <Unit>REL_TIME</Unit>
+                        <Target>` +
         timestamp +
         `</Target>
-												</u:Seek>
-												</s:Body>
-												</s:Envelope>`,
+                        </u:Seek>
+                        </s:Body>
+                        </s:Envelope>`,
     ]);
   },
   setPlayMode(playmode) {
@@ -517,15 +522,15 @@ module.exports = {
     xmlhttp.setRequestHeader('Content-Encoding', 'gzip, deflate, sdch, br');
     xmlhttp.send([
       `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-													<s:Body>
-													<u:SetPlayMode xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
-													<InstanceID>0</InstanceID>
-													<NewPlayMode>` +
+                          <s:Body>
+                          <u:SetPlayMode xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+                          <InstanceID>0</InstanceID>
+                          <NewPlayMode>` +
         mode[playmode] +
         `</NewPlayMode>
-													</u:SetPlayMode>
-													</s:Body>
-													</s:Envelope>`,
+                          </u:SetPlayMode>
+                          </s:Body>
+                          </s:Envelope>`,
     ]);
   },
 };
